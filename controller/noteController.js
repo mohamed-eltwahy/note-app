@@ -1,5 +1,6 @@
 var genratorId=require('../util/generator');
 var memoryStorage=require('../util/memory_storage');
+var noteModel=require('../model/note_model');
 
 exports.getAllNotes=(req,res)=>{
     var new_id_1   = genratorId.generate(); 
@@ -10,7 +11,10 @@ exports.getAllNotes=(req,res)=>{
    var keys= memoryStorage.getKeys(memoryStorage.storage)
    var values= memoryStorage.getValues(memoryStorage.storage)
     console.log('memory keys '+JSON.stringify(keys));
-    res.send('memory values '+JSON.stringify(values));
+    var Note=noteModel.Note;
+    var noteObj=new Note(new_id_1,"dd","kk","llk",new Date());
+    
+    res.send('memory values '+JSON.stringify(noteObj));
 
 }
 exports.SaveNote=(req,res)=>{
