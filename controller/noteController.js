@@ -3,18 +3,11 @@ var memoryStorage = require('../util/memory_storage');
 var noteModel = require('../model/note_model');
 
 exports.getAllNotes = (req, res) => {
-    //     var new_id_1   = genratorId.generate(); 
-    //     var new_id_2   = genratorId.generate(); 
-    //     memoryStorage.storage.setItem(new_id_1,"1st sequence")
-    //     memoryStorage.storage.setItem(new_id_2,"2st sequence")
+    let DB =  memoryStorage.getValues(memoryStorage.storage)
+    console.log('DB==> ' + DB);
+    // let notes = DB.map((x)=>x)
 
-    //    var keys= memoryStorage.getKeys(memoryStorage.storage)
-    var values = memoryStorage.getValues(memoryStorage.storage)
-    console.log('memory keys ' + JSON.stringify(values));
-    //     var Note=noteModel.Note;
-    //     var noteObj=new Note(new_id_1,"dd","kk","llk",new Date());
-
-   return res.status(200).send(JSON.stringify({data:values}));
+    return res.status(200).send({data:DB});
 
 }
 exports.SaveNote = (req, res) => {
@@ -23,16 +16,16 @@ exports.SaveNote = (req, res) => {
     var createdAt = new Date();
     var title = req.body.title;
     var content = req.body.content;
-    console.log(title,'%%%%%%%%%%%%%')
+    console.log(req.body, '==BODY')
     if (!title || !content) {
         return res.status(409).send({ error: 'title or content should be required !' });
-    }else{
+    } else {
         var Note = noteModel.Note;
-        var noteObjjj = new Note(getId, title, content, createdby, createdAt);
+        var noteObjjj = new Note(seqId, title, content, createdby, createdAt);
         memoryStorage.storage.setItem(seqId, noteObjjj);
-        return res.status(200 || 201).send({ message: 'save note successfully' });
+        return res.status(200 || 201).send({ message: 'save note successfully', note: { title, content } });
     }
-  
+
 }
 exports.UpdateNote = (req, res) => {
     res.send('update note controller');
